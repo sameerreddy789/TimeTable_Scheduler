@@ -4,9 +4,9 @@
 
 - [x] 1.1 Initialize monorepo structure with `frontend/` (React + Vite + TypeScript) and `backend/` (Node.js + Express + TypeScript) and `scheduler/` (Python) directories
 - [x] 1.2 Configure PostgreSQL database with UTF-8 encoding and `und-x-icu` collation; run initial schema migrations for all tables defined in the Data Models section
-- [ ] 1.3 Set up Redis instance; configure BullMQ scheduling queue with `concurrency: os.cpus().length` worker cap and dead-letter queue (`scheduling:dlq`)
-- [~] 1.4 Configure Vite PWA plugin with service worker template; set up i18next with `en` and `te` locale files under `src/locales/`
-- [~] 1.5 Set up Prometheus metrics endpoint, Sentry error reporting, and structured `pino` logging with correlation ID middleware in the Express app
+- [x] 1.3 Set up Redis instance; configure BullMQ scheduling queue with `concurrency: os.cpus().length` worker cap and dead-letter queue (`scheduling:dlq`)
+- [x] 1.4 Configure Vite PWA plugin with service worker template; set up i18next with `en` and `te` locale files under `src/locales/`
+- [-] 1.5 Set up Prometheus metrics endpoint, Sentry error reporting, and structured `pino` logging with correlation ID middleware in the Express app
 - [~] 1.6 Write database seed script for development (departments, rooms, timeslots, users)
 
 ## Phase 2: Authentication & RBAC
