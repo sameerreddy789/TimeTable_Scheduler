@@ -8,6 +8,7 @@ import { correlationIdMiddleware } from './middleware/correlationId';
 import { initSentry } from './observability/sentry';
 import { register, httpRequestCounter, httpRequestDuration } from './observability/metrics';
 import { logger } from './observability/logger';
+import authRouter from './auth/authRoutes';
 
 initSentry();
 
@@ -37,6 +38,9 @@ app.get('/metrics', async (_req, res) => {
   res.set('Content-Type', register.contentType);
   res.end(await register.metrics());
 });
+
+// Auth routes
+app.use('/auth', authRouter);
 
 // API router
 const apiRouter = express.Router();

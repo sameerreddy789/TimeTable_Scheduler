@@ -7,11 +7,11 @@
 - [x] 1.3 Set up Redis instance; configure BullMQ scheduling queue with `concurrency: os.cpus().length` worker cap and dead-letter queue (`scheduling:dlq`)
 - [x] 1.4 Configure Vite PWA plugin with service worker template; set up i18next with `en` and `te` locale files under `src/locales/`
 - [x] 1.5 Set up Prometheus metrics endpoint, Sentry error reporting, and structured `pino` logging with correlation ID middleware in the Express app
-- [-] 1.6 Write database seed script for development (departments, rooms, timeslots, users)
+- [x] 1.6 Write database seed script for development (departments, rooms, timeslots, users)
 
 ## Phase 2: Authentication & RBAC
 
-- [ ] 2.1 Implement JWT issuance (HS256, 8-hour expiry, HttpOnly + SameSite=Strict cookie) and token invalidation via Redis denylist
+- [-] 2.1 Implement JWT issuance (HS256, 8-hour expiry, HttpOnly + SameSite=Strict cookie) and token invalidation via Redis denylist
 - [ ] 2.2 Implement RBAC middleware with permission matrix for all four roles (Super_Admin, Department_Admin, Faculty, Authority)
 - [ ] 2.3 Implement rate limiting (5 failed attempts / IP / 15 min; account lock after 10 consecutive failures via Redis)
 - [ ] 2.4 Implement audit log post-handler middleware writing to `audit_logs` on every mutating request
