@@ -1,0 +1,29 @@
+{
+  "app": {
+    "title": "Smart Timetable"
+  },
+  "nav": {
+    "timetable": "Timetable",
+    "rooms": "Rooms",
+    "faculty": "Faculty",
+    "subjects": "Subjects",
+    "batches": "Batches",
+    "analytics": "Analytics"
+  },
+  "auth": {
+    "login": "Login",
+    "logout": "Logout"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "loading": "Loading...",
+    "error": "An error occurred"
+  },
+  "offline": {
+    "banner": "You are offline. Showing cached timetable."
+  },
+  "pwa": {
+    "updateBanner": "Timetable Updated — Refresh Needed"
+  }
+}

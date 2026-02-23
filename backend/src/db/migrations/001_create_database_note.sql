@@ -1,0 +1,6 @@
+-- Run this manually before migrations:
+-- CREATE DATABASE timetable_db
+--   ENCODING 'UTF8'
+--   LC_COLLATE 'und-x-icu'
+--   LC_CTYPE 'und-x-icu'
+--   TEMPLATE template0;

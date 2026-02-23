@@ -1,0 +1,10 @@
+CREATE INDEX idx_timetable_entries_version ON timetable_entries(timetable_version_id);
+CREATE INDEX idx_timetable_entries_room_timeslot ON timetable_entries(room_id, timeslot_id, day);
+CREATE INDEX idx_timetable_entries_faculty_timeslot ON timetable_entries(faculty_id, timeslot_id, day);
+CREATE INDEX idx_timetable_entries_day_timeslot ON timetable_entries(day, timeslot_id);
+CREATE INDEX idx_faculty_leaves_faculty_date ON faculty_leaves(faculty_id, date_start);
+CREATE INDEX idx_audit_logs_user ON audit_logs(user_id, created_at DESC);
+CREATE INDEX idx_notifications_user_unread ON notifications(user_id) WHERE is_read = FALSE;
+CREATE INDEX idx_blackout_dates_term ON blackout_dates(term_id, date_start, date_end);
+CREATE INDEX idx_subject_assignments_term_batch ON subject_assignments(term_id, batch_id);
+CREATE INDEX idx_scheduling_jobs_dept_term ON scheduling_jobs(department_id, term_id, status);
