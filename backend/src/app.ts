@@ -21,6 +21,7 @@ import subjectAssignmentsRouter from './routes/subjectAssignments';
 import parallelSectionsRouter from './routes/parallelSections';
 import electiveGroupsRouter from './routes/electiveGroups';
 import blackoutDatesRouter from './routes/blackoutDates';
+import scheduleRouter from './routes/schedule';
 
 initSentry();
 
@@ -71,6 +72,7 @@ apiRouter.use('/subject-assignments', subjectAssignmentsRouter);
 apiRouter.use('/parallel-sections', parallelSectionsRouter);
 apiRouter.use('/elective-groups', electiveGroupsRouter);
 apiRouter.use('/blackout-dates', blackoutDatesRouter);
+apiRouter.use('/schedule', scheduleRouter);
 app.use('/api', apiRouter);
 
 // Sentry error handler (must be last)
