@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { v4 as uuidv4 } from 'uuid';
 import { db } from '../db/client';
 import { signToken, verifyToken, denylistToken } from './jwt';
+import { loginRateLimiter } from '../middleware/rateLimiter';
 
 const router = Router();
 
@@ -20,8 +21,10 @@ const COOKIE_OPTIONS = {
   maxAge: 8 * 60 * 60 * 1000, // 8 hours in ms
 };
 
+const ACCOUNT_LOCK_THRESHOLD = 10;
+
 // POST /auth/login
-router.post('/login', async (req: Request, res: Response) => {
+router.post('/login', loginRateLimiter, async (req: Request, res: Response) => {
   const parsed = loginSchema.safeParse(req.body);
   if (!parsed.success) {
     return res.status(400).json({ error: 'Invalid request body', details: parsed.error.flatten() });
@@ -31,11 +34,16 @@ router.post('/login', async (req: Request, res: Response) => {
 
   try {
     const result = await db.query(
-      'SELECT id, email, role, password_hash, is_active FROM users WHERE email = $1',
+      'SELECT id, email, role, password_hash, is_active, failed_login_count, locked_until FROM users WHERE email = $1',
       [email]
     );
 
     const user = result.rows[0];
+
+    // Check account lock before verifying password
+    if (user && user.locked_until && new Date(user.locked_until) > new Date()) {
+      return res.status(401).json({ error: 'Account temporarily locked. Try again later.' });
+    }
 
     // Always run bcrypt compare to prevent timing attacks
     const dummyHash = '$2b$12$invalidhashfortimingprotection000000000000000000000000';
@@ -43,8 +51,40 @@ router.post('/login', async (req: Request, res: Response) => {
     const passwordMatch = await bcrypt.compare(password, hashToCompare);
 
     if (!user || !passwordMatch || !user.is_active) {
+      // Increment failed_login_count and potentially lock the account
+      if (user && user.is_active) {
+        const newCount = (user.failed_login_count ?? 0) + 1;
+        if (newCount >= ACCOUNT_LOCK_THRESHOLD) {
+          await db.query(
+            `UPDATE users
+             SET failed_login_count = $1,
+                 locked_until = NOW() + INTERVAL '15 minutes',
+                 updated_at = NOW()
+             WHERE id = $2`,
+            [newCount, user.id]
+          );
+        } else {
+          await db.query(
+            `UPDATE users
+             SET failed_login_count = $1,
+                 updated_at = NOW()
+             WHERE id = $2`,
+            [newCount, user.id]
+          );
+        }
+      }
       return res.status(401).json({ error: 'Invalid credentials' });
     }
+
+    // Successful login — reset failed_login_count and locked_until
+    await db.query(
+      `UPDATE users
+       SET failed_login_count = 0,
+           locked_until = NULL,
+           updated_at = NOW()
+       WHERE id = $1`,
+      [user.id]
+    );
 
     const jti = uuidv4();
     const token = signToken({

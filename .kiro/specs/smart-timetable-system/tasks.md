@@ -11,9 +11,9 @@
 
 ## Phase 2: Authentication & RBAC
 
-- [-] 2.1 Implement JWT issuance (HS256, 8-hour expiry, HttpOnly + SameSite=Strict cookie) and token invalidation via Redis denylist
-- [ ] 2.2 Implement RBAC middleware with permission matrix for all four roles (Super_Admin, Department_Admin, Faculty, Authority)
-- [ ] 2.3 Implement rate limiting (5 failed attempts / IP / 15 min; account lock after 10 consecutive failures via Redis)
+- [x] 2.1 Implement JWT issuance (HS256, 8-hour expiry, HttpOnly + SameSite=Strict cookie) and token invalidation via Redis denylist
+- [x] 2.2 Implement RBAC middleware with permission matrix for all four roles (Super_Admin, Department_Admin, Faculty, Authority)
+- [-] 2.3 Implement rate limiting (5 failed attempts / IP / 15 min; account lock after 10 consecutive failures via Redis)
 - [ ] 2.4 Implement audit log post-handler middleware writing to `audit_logs` on every mutating request
 - [ ] 2.5 Implement user management endpoints (create, update, deactivate, role assignment) — Super_Admin only
 - [ ] 2.6 Write property test: for any valid credential pair, JWT decode yields correct user ID, role, and ~8h expiry (Property 1)
