@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import pinoHttp from 'pino-http';
 import * as Sentry from '@sentry/node';
 import { correlationIdMiddleware } from './middleware/correlationId';
+import { auditLogMiddleware } from './middleware/auditLog';
 import { initSentry } from './observability/sentry';
 import { register, httpRequestCounter, httpRequestDuration } from './observability/metrics';
 import { logger } from './observability/logger';
@@ -20,6 +21,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(pinoHttp({ logger }));
 app.use(correlationIdMiddleware);
+app.use(auditLogMiddleware);
 
 // Prometheus metrics middleware
 app.use((_req, res, next) => {
