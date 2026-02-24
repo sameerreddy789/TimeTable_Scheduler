@@ -10,6 +10,7 @@ import { initSentry } from './observability/sentry';
 import { register, httpRequestCounter, httpRequestDuration } from './observability/metrics';
 import { logger } from './observability/logger';
 import authRouter from './auth/authRoutes';
+import usersRouter from './routes/users';
 
 initSentry();
 
@@ -49,6 +50,7 @@ const apiRouter = express.Router();
 apiRouter.get('/health', (_req, res) => {
   res.json({ status: 'ok' });
 });
+apiRouter.use('/users', usersRouter);
 app.use('/api', apiRouter);
 
 // Sentry error handler (must be last)
