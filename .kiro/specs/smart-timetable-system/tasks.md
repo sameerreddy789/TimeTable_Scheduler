@@ -85,42 +85,42 @@
 
 ## Phase 9: Supporting Features
 
-- [ ] 9.1 Implement Excel Importer (SheetJS) for rooms, faculty, subjects, batches; atomic transaction with rollback on any error; return per-row error report
-- [ ] 9.2 Implement downloadable Excel template files for each importable entity type
-- [ ] 9.3 Implement Dynamic Rescheduling: on faculty leave, identify affected classes, suggest ranked replacements (expertise → daily load → substitution count → availability), apply swap and audit log
-- [ ] 9.4 Implement Free Room Detection: `GET /rooms/available?date=&start=&end=` returning free rooms with type/capacity/building; room booking creation with audit log; utilization heatmap view
-- [ ] 9.5 Implement Notification Service: in-app (Socket.io + `notifications` table) and email (BullMQ + Nodemailer) with per-user preferences and 90-day retention
-- [ ] 9.6 Implement Shareable Public Timetable Links: generate UUID public tokens per batch/faculty timetable; QR code display; revoke/regenerate; optional short-lived 24h token mode
-- [ ] 9.7 Implement Guided Setup Wizard (8 steps) with server-side step status checks and `wizard_progress` persistence; step 7 triggers pre-validation
-- [ ] 9.8 Write property test: for any Excel file with at least one invalid row, DB state is unchanged after the import attempt (Property 11)
-- [ ] 9.9 Write property test: for any faculty leave, suggested replacements are ordered by expertise match → daily load → substitution count, and all candidates are available without exceeding max classes/day (Property 12)
+- [x] 9.1 Implement Excel Importer (SheetJS) for rooms, faculty, subjects, batches; atomic transaction with rollback on any error; return per-row error report
+- [x] 9.2 Implement downloadable Excel template files for each importable entity type
+- [x] 9.3 Implement Dynamic Rescheduling: on faculty leave, identify affected classes, suggest ranked replacements (expertise → daily load → substitution count → availability), apply swap and audit log
+- [x] 9.4 Implement Free Room Detection: `GET /rooms/available?date=&start=&end=` returning free rooms with type/capacity/building; room booking creation with audit log; utilization heatmap view
+- [x] 9.5 Implement Notification Service: in-app (Socket.io + `notifications` table) and email (BullMQ + Nodemailer) with per-user preferences and 90-day retention
+- [x] 9.6 Implement Shareable Public Timetable Links: generate UUID public tokens per batch/faculty timetable; QR code display; revoke/regenerate; optional short-lived 24h token mode
+- [x] 9.7 Implement Guided Setup Wizard (8 steps) with server-side step status checks and `wizard_progress` persistence; step 7 triggers pre-validation
+- [x] 9.8 Write property test: for any Excel file with at least one invalid row, DB state is unchanged after the import attempt (Property 11)
+- [x] 9.9 Write property test: for any faculty leave, suggested replacements are ordered by expertise match → daily load → substitution count, and all candidates are available without exceeding max classes/day (Property 12)
 
 ## Phase 10: Public API & Security
 
-- [ ] 10.1 Implement Public API router at `/api/v1/public` with API key authentication, Redis sliding-window rate limiting (100 req/min/key), and DPDP anonymization
-- [ ] 10.2 Implement all four public endpoints: GET timetable by batch, GET timetable by faculty, GET available rooms, GET faculty leave dates
-- [ ] 10.3 Implement API key management (create, activate/deactivate, set `data_access_consent` flag) — Super_Admin only
-- [ ] 10.4 Expose OpenAPI documentation at `/api/docs`
-- [ ] 10.5 Enforce HTTPS redirect, CSRF token validation on all state-changing requests, and input sanitization (SQL injection / XSS prevention) across all endpoints
+- [x] 10.1 Implement Public API router at `/api/v1/public` with API key authentication, Redis sliding-window rate limiting (100 req/min/key), and DPDP anonymization
+- [x] 10.2 Implement all four public endpoints: GET timetable by batch, GET timetable by faculty, GET available rooms, GET faculty leave dates
+- [x] 10.3 Implement API key management (create, activate/deactivate, set `data_access_consent` flag) — Super_Admin only
+- [x] 10.4 Expose OpenAPI documentation at `/api/docs`
+- [x] 10.5 Enforce HTTPS redirect, CSRF token validation on all state-changing requests, and input sanitization (SQL injection / XSS prevention) across all endpoints
 
 ## Phase 11: PWA & i18n
 
-- [ ] 11.1 Implement service worker caching for current-week timetable JSON; store `version_hash` (SHA-256) or `Last-Modified` in cached response header
-- [ ] 11.2 Implement background sync on reconnect (`?since={last_sync_ts}`); compare cached vs server version hash; display "Timetable Updated — Refresh Needed" banner when server version is newer
-- [ ] 11.3 Implement offline indicator banner (`navigator.onLine` listener) and notification badge on reconnect for missed updates
-- [ ] 11.4 Complete i18next translation files for all UI strings, error messages, and notification text in both `en` and `te` locales; configure `fallbackLng: 'en'`
-- [ ] 11.5 Implement language switcher UI; persist preference in `localStorage`; wire PDF exporter to active i18next language
+- [x] 11.1 Implement service worker caching for current-week timetable JSON; store `version_hash` (SHA-256) or `Last-Modified` in cached response header
+- [x] 11.2 Implement background sync on reconnect (`?since={last_sync_ts}`); compare cached vs server version hash; display "Timetable Updated — Refresh Needed" banner when server version is newer
+- [x] 11.3 Implement offline indicator banner (`navigator.onLine` listener) and notification badge on reconnect for missed updates
+- [x] 11.4 Complete i18next translation files for all UI strings, error messages, and notification text in both `en` and `te` locales; configure `fallbackLng: 'en'`
+- [x] 11.5 Implement language switcher UI; persist preference in `localStorage`; wire PDF exporter to active i18next language
 
 ## Phase 12: Soft Constraint Weight Configuration
 
-- [ ] 12.1 Implement `soft_constraint_weights` CRUD endpoints (weight 1–10 per constraint key, per term); provide default values
-- [ ] 12.2 Wire configured weights into the job payload sent to the Python scheduler
-- [ ] 12.3 Implement weight reset to defaults endpoint
+- [x] 12.1 Implement `soft_constraint_weights` CRUD endpoints (weight 1–10 per constraint key, per term); provide default values
+- [x] 12.2 Wire configured weights into the job payload sent to the Python scheduler
+- [x] 12.3 Implement weight reset to defaults endpoint
 
 ## Phase 13: Integration Testing & Property Tests
 
-- [ ] 13.1 Set up property-based testing framework (fast-check for TypeScript/Node.js; Hypothesis for Python); configure minimum 100 iterations per property test
-- [ ] 13.2 Implement all property tests referenced in tasks 2.6–2.9, 3.9–3.11, 4.4, 5.6, 6.6–6.8, 7.9–7.10, 8.5, 9.8–9.9 with tags in format `Feature: smart-timetable-system, Property N: <text>`
-- [ ] 13.3 Write integration tests for the full scheduling flow: pre-validation → enqueue → Python solve → staging → apply → verify timetable_entries
-- [ ] 13.4 Write integration tests for the two-phase write: verify no timetable_entries exist before apply, verify batch INSERT produces correct rows after apply
-- [ ] 13.5 Write end-to-end tests for approval workflow: draft → submit → approve → published + locked
+- [x] 13.1 Set up property-based testing framework (fast-check for TypeScript/Node.js; Hypothesis for Python); configure minimum 100 iterations per property test
+- [x] 13.2 Implement all property tests referenced in tasks 2.6–2.9, 3.9–3.11, 4.4, 5.6, 6.6–6.8, 7.9–7.10, 8.5, 9.8–9.9 with tags in format `Feature: smart-timetable-system, Property N: <text>`
+- [x] 13.3 Write integration tests for the full scheduling flow: pre-validation → enqueue → Python solve → staging → apply → verify timetable_entries
+- [x] 13.4 Write integration tests for the two-phase write: verify no timetable_entries exist before apply, verify batch INSERT produces correct rows after apply
+- [x] 13.5 Write end-to-end tests for approval workflow: draft → submit → approve → published + locked
