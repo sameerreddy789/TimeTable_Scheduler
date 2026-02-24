@@ -11,6 +11,16 @@ import { register, httpRequestCounter, httpRequestDuration } from './observabili
 import { logger } from './observability/logger';
 import authRouter from './auth/authRoutes';
 import usersRouter from './routes/users';
+import roomsRouter from './routes/rooms';
+import departmentsRouter from './routes/departments';
+import batchesRouter from './routes/batches';
+import timeslotsRouter from './routes/timeslots';
+import subjectsRouter from './routes/subjects';
+import facultyRouter from './routes/faculty';
+import subjectAssignmentsRouter from './routes/subjectAssignments';
+import parallelSectionsRouter from './routes/parallelSections';
+import electiveGroupsRouter from './routes/electiveGroups';
+import blackoutDatesRouter from './routes/blackoutDates';
 
 initSentry();
 
@@ -51,6 +61,16 @@ apiRouter.get('/health', (_req, res) => {
   res.json({ status: 'ok' });
 });
 apiRouter.use('/users', usersRouter);
+apiRouter.use('/rooms', roomsRouter);
+apiRouter.use('/departments', departmentsRouter);
+apiRouter.use('/batches', batchesRouter);
+apiRouter.use('/timeslots', timeslotsRouter);
+apiRouter.use('/subjects', subjectsRouter);
+apiRouter.use('/faculty', facultyRouter);
+apiRouter.use('/subject-assignments', subjectAssignmentsRouter);
+apiRouter.use('/parallel-sections', parallelSectionsRouter);
+apiRouter.use('/elective-groups', electiveGroupsRouter);
+apiRouter.use('/blackout-dates', blackoutDatesRouter);
 app.use('/api', apiRouter);
 
 // Sentry error handler (must be last)
