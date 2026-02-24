@@ -30,6 +30,7 @@ import notificationsRouter from './routes/notifications';
 import publicApiRouter from './routes/publicApi';
 import softWeightsRouter from './routes/softWeights';
 import importerRouter from './routes/importer';
+import shareLinksRouter from './routes/shareLinks';
 
 initSentry();
 
@@ -88,6 +89,7 @@ apiRouter.use('/faculty-leave', facultyLeaveRouter);
 apiRouter.use('/notifications', notificationsRouter);
 apiRouter.use('/soft-weights', softWeightsRouter);
 apiRouter.use('/import', importerRouter);
+apiRouter.use('/share-links', shareLinksRouter);
 app.use('/api', apiRouter);
 
 // Public API (API key auth, no session cookie required)
