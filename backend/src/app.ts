@@ -27,6 +27,8 @@ import analyticsRouter from './routes/analytics';
 import freeRoomsRouter from './routes/freeRooms';
 import facultyLeaveRouter from './routes/facultyLeave';
 import notificationsRouter from './routes/notifications';
+import publicApiRouter from './routes/publicApi';
+import softWeightsRouter from './routes/softWeights';
 
 initSentry();
 
@@ -83,7 +85,11 @@ apiRouter.use('/analytics', analyticsRouter);
 apiRouter.use('/rooms', freeRoomsRouter);
 apiRouter.use('/faculty-leave', facultyLeaveRouter);
 apiRouter.use('/notifications', notificationsRouter);
+apiRouter.use('/soft-weights', softWeightsRouter);
 app.use('/api', apiRouter);
+
+// Public API (API key auth, no session cookie required)
+app.use('/api/v1/public', publicApiRouter);
 
 // Sentry error handler (must be last)
 app.use(Sentry.Handlers.errorHandler());
