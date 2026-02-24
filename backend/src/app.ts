@@ -23,6 +23,7 @@ import electiveGroupsRouter from './routes/electiveGroups';
 import blackoutDatesRouter from './routes/blackoutDates';
 import scheduleRouter from './routes/schedule';
 import timetableRouter from './routes/timetable';
+import analyticsRouter from './routes/analytics';
 
 initSentry();
 
@@ -75,6 +76,7 @@ apiRouter.use('/elective-groups', electiveGroupsRouter);
 apiRouter.use('/blackout-dates', blackoutDatesRouter);
 apiRouter.use('/schedule', scheduleRouter);
 apiRouter.use('/timetable', timetableRouter);
+apiRouter.use('/analytics', analyticsRouter);
 app.use('/api', apiRouter);
 
 // Sentry error handler (must be last)
