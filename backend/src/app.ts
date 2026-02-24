@@ -24,6 +24,9 @@ import blackoutDatesRouter from './routes/blackoutDates';
 import scheduleRouter from './routes/schedule';
 import timetableRouter from './routes/timetable';
 import analyticsRouter from './routes/analytics';
+import freeRoomsRouter from './routes/freeRooms';
+import facultyLeaveRouter from './routes/facultyLeave';
+import notificationsRouter from './routes/notifications';
 
 initSentry();
 
@@ -77,6 +80,9 @@ apiRouter.use('/blackout-dates', blackoutDatesRouter);
 apiRouter.use('/schedule', scheduleRouter);
 apiRouter.use('/timetable', timetableRouter);
 apiRouter.use('/analytics', analyticsRouter);
+apiRouter.use('/rooms', freeRoomsRouter);
+apiRouter.use('/faculty-leave', facultyLeaveRouter);
+apiRouter.use('/notifications', notificationsRouter);
 app.use('/api', apiRouter);
 
 // Sentry error handler (must be last)
