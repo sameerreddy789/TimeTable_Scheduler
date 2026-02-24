@@ -22,6 +22,7 @@ import parallelSectionsRouter from './routes/parallelSections';
 import electiveGroupsRouter from './routes/electiveGroups';
 import blackoutDatesRouter from './routes/blackoutDates';
 import scheduleRouter from './routes/schedule';
+import timetableRouter from './routes/timetable';
 
 initSentry();
 
@@ -73,6 +74,7 @@ apiRouter.use('/parallel-sections', parallelSectionsRouter);
 apiRouter.use('/elective-groups', electiveGroupsRouter);
 apiRouter.use('/blackout-dates', blackoutDatesRouter);
 apiRouter.use('/schedule', scheduleRouter);
+apiRouter.use('/timetable', timetableRouter);
 app.use('/api', apiRouter);
 
 // Sentry error handler (must be last)
