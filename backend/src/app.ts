@@ -32,6 +32,8 @@ import softWeightsRouter from './routes/softWeights';
 import importerRouter from './routes/importer';
 import shareLinksRouter from './routes/shareLinks';
 import wizardRouter from './routes/wizard';
+import swaggerUi from 'swagger-ui-express';
+import { swaggerSpec } from './openapi';
 
 initSentry();
 
@@ -62,6 +64,10 @@ app.get('/metrics', async (_req, res) => {
   res.set('Content-Type', register.contentType);
   res.end(await register.metrics());
 });
+
+// OpenAPI docs
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.get('/api/docs.json', (_req, res) => res.json(swaggerSpec));
 
 // Auth routes
 app.use('/auth', authRouter);
