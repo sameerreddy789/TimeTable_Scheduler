@@ -261,4 +261,15 @@ router.post('/:id/rollover', requireRole('Super_Admin', 'Department_Admin'), asy
   }
 });
 
+// GET /api/timetable/version-hash — returns SHA-256 of latest published timetable (task 11.1)
+import { createHash } from 'crypto';
+router.get('/version-hash', async (_req: Request, res: Response) => {
+  const result = await db.query(
+    `SELECT MAX(updated_at) AS last_updated FROM timetable_versions WHERE status='Published'`
+  );
+  const ts = result.rows[0]?.last_updated ?? new Date(0).toISOString();
+  const hash = createHash('sha256').update(String(ts)).digest('hex');
+  res.json({ hash, last_updated: ts });
+});
+
 export default router;
