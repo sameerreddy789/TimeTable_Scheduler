@@ -34,6 +34,7 @@ import shareLinksRouter from './routes/shareLinks';
 import wizardRouter from './routes/wizard';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './openapi';
+import { httpsRedirect, csrfProtection, sanitizeInputs, issueCsrfToken } from './middleware/security';
 
 initSentry();
 
@@ -43,6 +44,9 @@ app.use(helmet());
 app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
+app.use(httpsRedirect);
+app.use(sanitizeInputs);
+app.use(csrfProtection);
 app.use(pinoHttp({ logger }));
 app.use(correlationIdMiddleware);
 app.use(auditLogMiddleware);
@@ -71,6 +75,7 @@ app.get('/api/docs.json', (_req, res) => res.json(swaggerSpec));
 
 // Auth routes
 app.use('/auth', authRouter);
+app.get('/auth/csrf-token', issueCsrfToken);
 
 // API router
 const apiRouter = express.Router();
