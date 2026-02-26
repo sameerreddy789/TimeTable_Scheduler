@@ -6,6 +6,51 @@ const { authenticate } = require('../middleware');
 const router = Router();
 router.use(authenticate);
 
+// Find free rooms by day and time range (no timeslot UUIDs needed)
+router.get('/find-free', async (req, res) => {
+  const { day, start_time, end_time } = req.query;
+  if (!day || !start_time || !end_time) {
+    return res.status(400).json({ error: 'day, start_time, and end_time are required' });
+  }
+  const validDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  if (!validDays.includes(day)) {
+    return res.status(400).json({ error: 'day must be one of: ' + validDays.join(', ') });
+  }
+  const timeRe = /^\d{2}:\d{2}$/;
+  if (!timeRe.test(start_time) || !timeRe.test(end_time)) {
+    return res.status(400).json({ error: 'start_time and end_time must be HH:MM format' });
+  }
+  try {
+    const overlapping = await db.query(
+      `SELECT id FROM timeslots WHERE start_time < $2::time AND end_time > $1::time AND is_break = FALSE`,
+      [start_time, end_time]
+    );
+    const tsIds = overlapping.rows.map(r => r.id);
+    const result = await db.query(
+      `SELECT r.id, r.room_number, r.room_type, r.capacity, r.building
+       FROM rooms r
+       WHERE r.is_active = TRUE
+         AND NOT EXISTS (
+           SELECT 1 FROM timetable_entries te
+           JOIN timetable_versions tv ON tv.id = te.timetable_version_id
+           WHERE te.room_id = r.id AND tv.status = 'Published' AND te.day = $1
+             AND ($2::uuid[] IS NULL OR te.timeslot_id = ANY($2::uuid[]))
+         )
+         AND NOT EXISTS (
+           SELECT 1 FROM room_bookings rb
+           JOIN timeslots ts ON ts.id = rb.timeslot_id
+           WHERE rb.room_id = r.id AND ts.start_time < $4::time AND ts.end_time > $3::time
+         )
+       ORDER BY r.building, r.room_number`,
+      [day, tsIds.length > 0 ? tsIds : null, start_time, end_time]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error('find-free error:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 router.get('/available', async (req, res) => {
   const { date, timeslot_ids } = req.query;
   if (!date) return res.status(400).json({ error: 'date is required' });

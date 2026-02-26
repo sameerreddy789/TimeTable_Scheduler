@@ -70,3 +70,15 @@ select { padding: 4px 8px; border-radius: 4px; cursor: pointer; border: 1px soli
 .slot-lab { background: #dcfce7; }
 .slot-elective { background: #fef3c7; }
 .slot-break { background: #f3f4f6; color: #9ca3af; }
+
+/* Free Room Finder */
+.free-room-finder { margin-top: 16px; }
+.free-room-finder h3 { margin-bottom: 12px; }
+.finder-form { margin-bottom: 16px; }
+.finder-fields { display: flex; gap: 16px; align-items: flex-end; flex-wrap: wrap; }
+.finder-fields .field { display: flex; flex-direction: column; gap: 4px; }
+.finder-fields .field label { font-size: 0.85rem; font-weight: 500; color: #374151; }
+.finder-fields .field select,
+.finder-fields .field input[type="time"] { padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.9rem; }
+.finder-fields .field-btn { justify-content: flex-end; }
+.result-count { font-weight: 600; color: #16a34a; margin: 12px 0 4px; }

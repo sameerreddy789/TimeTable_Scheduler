@@ -71,13 +71,88 @@ const APP = {
       const res = await API.get('rooms');
       if (!res.ok) throw new Error();
       const rooms = await res.json();
-      let html = `<h2>${I18N.t('nav.rooms')}</h2><table><thead><tr><th>Room</th><th>Type</th><th>Capacity</th><th>Building</th></tr></thead><tbody>`;
+
+      let html = `<h2>${I18N.t('nav.rooms')}</h2>`;
+
+      // Free Room Finder
+      html += `
+        <div class="card free-room-finder">
+          <h3>Find Free Rooms</h3>
+          <form id="free-room-form" class="finder-form">
+            <div class="finder-fields">
+              <div class="field">
+                <label for="finder-day">Day</label>
+                <select id="finder-day" required>
+                  <option value="">Select day</option>
+                  <option value="Mon">Monday</option>
+                  <option value="Tue">Tuesday</option>
+                  <option value="Wed">Wednesday</option>
+                  <option value="Thu">Thursday</option>
+                  <option value="Fri">Friday</option>
+                  <option value="Sat">Saturday</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="finder-start">Start Time</label>
+                <input type="time" id="finder-start" required value="09:00" />
+              </div>
+              <div class="field">
+                <label for="finder-end">End Time</label>
+                <input type="time" id="finder-end" required value="10:00" />
+              </div>
+              <div class="field field-btn">
+                <button type="submit" class="btn btn-primary">Search</button>
+              </div>
+            </div>
+          </form>
+          <div id="free-room-results"></div>
+        </div>`;
+
+      // All rooms table
+      html += `<h3 style="margin-top:24px;">All Rooms</h3>`;
+      html += `<table><thead><tr><th>Room</th><th>Type</th><th>Capacity</th><th>Building</th></tr></thead><tbody>`;
       for (const r of rooms) {
         html += `<tr><td>${r.room_number}</td><td>${r.room_type}</td><td>${r.capacity}</td><td>${r.building||'—'}</td></tr>`;
       }
       html += '</tbody></table>';
       el.innerHTML = html;
+
+      // Attach search handler
+      document.getElementById('free-room-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await this.searchFreeRooms();
+      });
     } catch { el.innerHTML = `<h2>${I18N.t('nav.rooms')}</h2><p>${I18N.t('common.error')}</p>`; }
+  },
+
+  async searchFreeRooms() {
+    const day = document.getElementById('finder-day').value;
+    const start = document.getElementById('finder-start').value;
+    const end = document.getElementById('finder-end').value;
+    const resultsEl = document.getElementById('free-room-results');
+
+    if (!day || !start || !end) { resultsEl.innerHTML = '<p class="error">Please fill all fields.</p>'; return; }
+    if (start >= end) { resultsEl.innerHTML = '<p class="error">End time must be after start time.</p>'; return; }
+
+    resultsEl.innerHTML = `<p>${I18N.t('common.loading')}</p>`;
+    try {
+      const res = await API.get(`rooms/find-free?day=${day}&start_time=${start}&end_time=${end}`);
+      if (!res.ok) throw new Error();
+      const rooms = await res.json();
+      if (rooms.length === 0) {
+        resultsEl.innerHTML = '<p>No free rooms found for the selected time.</p>';
+        return;
+      }
+      let html = `<p class="result-count">${rooms.length} room${rooms.length > 1 ? 's' : ''} available</p>`;
+      html += '<table><thead><tr><th>Room</th><th>Type</th><th>Capacity</th><th>Building</th></tr></thead><tbody>';
+      for (const r of rooms) {
+        html += `<tr><td>${r.room_number}</td><td>${r.room_type}</td><td>${r.capacity}</td><td>${r.building||'—'}</td></tr>`;
+      }
+      html += '</tbody></table>';
+      resultsEl.innerHTML = html;
+    } catch {
+      resultsEl.innerHTML = '<p class="error">Failed to search. Please try again.</p>';
+    }
   },
 
   async loadFacultyPage() {
