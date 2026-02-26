@@ -2,9 +2,8 @@
   "name": "smart-timetable-system",
   "version": "1.0.0",
   "private": true,
-  "workspaces": ["frontend", "backend"],
+  "workspaces": ["backend"],
   "scripts": {
-    "dev:frontend": "npm run dev --workspace=frontend",
     "dev:backend": "npm run dev --workspace=backend"
   }
 }

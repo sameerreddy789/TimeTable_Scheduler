@@ -1,12 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Smart Timetable</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Timetable</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- Status Banners -->
+  <div id="offline-banner" class="banner banner-warning" role="alert" style="display:none;">
+    <span id="offline-text">You are offline. Showing cached timetable.</span>
+  </div>
+  <div id="update-banner" class="banner banner-info" role="alert" style="display:none;">
+    <span id="update-text">Timetable Updated — Refresh Needed</span>
+    <button id="refresh-btn" class="btn-refresh">Refresh</button>
+  </div>
+  <div id="reconnected-banner" class="banner banner-success" role="status" style="display:none;">
+    <span id="reconnected-text">Back online — checking for updates…</span>
+  </div>
+
+  <!-- Header -->
+  <header class="app-header">
+    <h1 id="app-title" class="app-title">Smart Timetable</h1>
+    <nav class="app-nav">
+      <a href="#" data-page="dashboard" class="nav-link active">Dashboard</a>
+      <a href="#" data-page="timetable" class="nav-link">Timetable</a>
+      <a href="#" data-page="rooms" class="nav-link">Rooms</a>
+      <a href="#" data-page="faculty" class="nav-link">Faculty</a>
+      <a href="#" data-page="subjects" class="nav-link">Subjects</a>
+      <a href="#" data-page="analytics" class="nav-link">Analytics</a>
+    </nav>
+    <div class="header-actions">
+      <select id="lang-switcher" aria-label="Select language">
+        <option value="en">English</option>
+        <option value="te">తెలుగు</option>
+      </select>
+      <button id="login-btn" class="btn btn-primary">Login</button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main id="main-content" class="main-content">
+    <div id="page-dashboard" class="page active">
+      <h2>Welcome to Smart Timetable</h2>
+      <p>Manage your institution's timetable efficiently.</p>
+    </div>
+    <div id="page-timetable" class="page"></div>
+    <div id="page-rooms" class="page"></div>
+    <div id="page-faculty" class="page"></div>
+    <div id="page-subjects" class="page"></div>
+    <div id="page-analytics" class="page"></div>
+  </main>
+
+  <!-- Login Modal -->
+  <div id="login-modal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <h2 id="login-title">Login</h2>
+      <form id="login-form">
+        <label for="login-email" id="label-email">Email</label>
+        <input type="email" id="login-email" required />
+        <label for="login-password" id="label-password">Password</label>
+        <input type="password" id="login-password" required />
+        <p id="login-error" class="error" style="display:none;"></p>
+        <div class="modal-actions">
+          <button type="submit" class="btn btn-primary" id="login-submit">Login</button>
+          <button type="button" class="btn" id="login-cancel">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
 </html>

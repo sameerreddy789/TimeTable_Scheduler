@@ -2,30 +2,8 @@
   "name": "frontend",
   "version": "1.0.0",
   "private": true,
-  "type": "module",
+  "description": "Smart Timetable frontend - plain HTML/CSS/JS",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-router-dom": "^6.26.0",
-    "i18next": "^23.14.0",
-    "react-i18next": "^15.0.1",
-    "react-dnd": "^16.0.1",
-    "react-dnd-html5-backend": "^16.0.1",
-    "socket.io-client": "^4.7.5",
-    "axios": "^1.7.7",
-    "qrcode.react": "^4.1.0"
-  },
-  "devDependencies": {
-    "vite": "^5.4.2",
-    "@vitejs/plugin-react": "^4.3.1",
-    "vite-plugin-pwa": "^0.20.5",
-    "typescript": "^5.5.3",
-    "@types/react": "^18.3.5",
-    "@types/react-dom": "^18.3.0"
+    "dev": "npx serve . -l 5173 --cors"
   }
 }
